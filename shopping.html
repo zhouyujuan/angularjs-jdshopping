@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #f8f8f8">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="keywords" content="网上购物,手机,笔记本,电脑,MP3,CD,VCD,DV,相机,数码,配件,手表,存储卡,京东商城" />
+    <meta name="description" content="京东JD.COM-专业的综合网上购物商城,在线销售家电、数码、电脑、服装、母婴、图书、食品等数万个品牌商品.便捷、诚信的服务,为您提供愉悦的网上商城购物体验! " />
+    <meta name="Copyright" content="北京合硕房地产经纪有限公司版权所有,未经允许,禁止转载,侵权必究" />
+    <meta name="author" content="周玉娟" />
+    <title>专业网上购物平台品质保障！ - 京东商城</title>
+    <script type="text/javascript" src="js/flexible.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/swiper.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/global.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body ng-app="myApp" ng-controller="shoppingController">
+    <header id="header-nav">
+        <a href="javascript:history.back();" class="back" style="color: #333">返回</a>
+        <h1 class="nav-title">购物车</h1>
+        <!-- <div class="nav-right"><span>下拉</span></div> -->
+    </header>
+    <div ng-show="shoopcars.length==0" class="flex quan-attion">
+        <div class="left-quan">
+            <a href="https://coupon.m.jd.com/center/getCouponCenter" class="clearfloat">
+                <div class="left-img">
+                    <img src="img/act.coupon.png">
+                </div>
+                <div class="right-word">
+                    <span class="right-up">每日神券</span>
+                    <span class="right-down">限量发放,快去抢</span>
+                </div>
+            </a>
+        </div>
+        <div class="right-attion">
+            <a href="https://coupon.m.jd.com/center/getCouponCenter" class="clearfloat">
+                <div class="left-img">
+                    <img src="img/act.coupon.png">
+                </div>
+                <div class="right-word">
+                    <span class="right-up">我的关注</span>
+                    <span class="right-down">你关心的都在这里</span>
+                </div>
+            </a>
+        </div>
+    </div>
+    <section ng-show="shoopcars.length!=0" class="shopping_list" ng-repeat="(firstindex,items) in shoopcars">
+        <div class="shop_name">
+            <div class="shopcheckbox-{{items.choose}}" ng-click="moduleCheckbtn(firstindex)"><span></span></div>
+            <div class="shoplink">
+                <span class="shop-icon">
+                          <img src="img/POPshopTitle.png"/>
+                      </span>
+                <a href="javascript:;" class="name_link">{{items.shoppname}}</a>
+            </div>
+        </div>
+        <ul>
+            <li class="item" ng-repeat="(secondindex,obj) in items.list">
+                <div class="shop_info">
+                <!--  -->
+                    <div class="shopcheckbox-{{obj.itemchoose}}" ng-click="itemclick(firstindex,secondindex)"><span></span></div>
+                    <div class="shop_detail clearfloat">
+                        <a href="javascript:;" class="img-link">
+                            <img ng-src={{obj.url}}>
+                        </a>
+                        <dl>
+                            <dt class="shop_title">
+                                <a href="javascript:;" class="title">{{obj.info}}</a>
+                            </dt>
+                            <dd class="shop_price_edit flex">
+                                <div class="pric">￥<span class="big">{{obj.all_price}}</span><span><span>.</span>{{obj.smal_price}}</span></div>
+                                <div class="edit"><span class="sub" ng-click="subnumber(firstindex,secondindex)"></span><input class="num" value={{obj.paynumber}}></input><span class="add" ng-click="addnum(firstindex,secondindex)"></span></div>
+                            </dd>
+                            <dd class="shop_edit">
+                                <ul ng-show="showchoose!=0 && shopshow_model==firstindex && shopshow_cart==secondindex" class="show_other_service">
+                                    <li><a href="javascript:;">选服务</a></li>
+                                    <li><a href="javascript:;">移入关注</a></li>
+                                    <li><a href="javascript:;" ng-click="delitem(firstindex,secondindex)">删除</a></li>
+                                    <li><a href="javascript:;" ng-click="finishclick()">完成</a></li>
+                                </ul>
+                                <span class="edit_button" ng-click="clickedit(firstindex,secondindex)">编辑</span>
+                                
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <section class="Seckill-module">
+        <!-- 分割线 -->
+        <div class="gray-text">
+            <span class="gray-layout">
+               <span class="gray-text-img"></span> 京东秒杀
+            </span>
+        </div>
+        <!-- 秒杀的头部 -->
+        <div class="seckill-title">
+            <a href="javascript:;" class="leftTime">
+                <span class="z-time">16点场</span>
+                <div class="show-time">
+                    <div class="item h-time">{{hours}}</div>
+                    <span>:</span>
+                    <div class="item m-time">{{min}}</div>
+                    <span>:</span>
+                    <div class="item s-time">{{second}}</div>
+                </div>
+            </a>
+            <a href="https://ms.m.jd.com/seckill/seckillList" class="more">更多<i class="seckill-more-icon"></i></a>
+        </div>
+        <div class="swiper-container shopping">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" ng-repeat="item in shoppingArray">
+                    <a href="javascript:;">
+                        <img ng-src={{item.url}}>
+                    </a>
+                    <div class="price">
+                        <span class="first">￥<span>{{item.price}}</span></span>
+                        <del class="second">￥<span>{{item.originprice}}</span></del>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 当底部出现结算界面的时候修改样式 -->
+    <section class="hot-shopping-{{shoopcars.length!=0}}">
+        <!-- 分割线 -->
+        <div class="gray-text">
+            <span class="gray-layout">
+               <span class="gray-text-img"></span> 看看热卖
+            </span>
+        </div>
+        <ul class="shop-list flex">
+            <li class="item" ng-repeat="obj in shoppinglists">
+                <a href="javascript:;">
+                    <div class="shop-content">
+                        <div class="shop-pic">
+                            <img ng-src={{obj.url}}>
+                            <span class="shop-active" ng-show="obj.active == 1">满减118.00减5.00</span>
+                        </div>
+                        <span class="shop-info">{{obj.info}}</span>
+                        <div class="price-info-div">
+                            <span class="shop-price">￥<span class="price-all">{{obj.all_price}}</span><span class="money-dot"><span>.</span>{{obj.smal_price}}</span></span>
+                            <span class="ship-comment">{{obj.comment_num}}条评论</span>
+                        </div>
+                        <div class="clearfloat">
+                            <span class="cart-shopp" ng-click="chooseShop(obj)"></span>
+                            <span class="guess-button">看相似</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </section>
+   <!-- 结算 -->
+    <section class="should_pay clearfloat" ng-show="shoopcars.length!=0">
+    <div class="left-check-{{allchecksign}}" ng-click="bottomChooseClick(allchecksign)" >
+    
+        <span class="all-checkbox"></span>
+        <span class="all-check-word">全选</span>
+    </div>
+    <div class="right-info">
+        <div class="info-money">
+            <span class="total">合计:￥{{Totalmoney}}</span>
+            <span class="all">总额:￥{{Totalmoney}}</span>
+        </div>
+        <div class="go-pay">
+            <a href="javascript:;">去结算</span></a>
+        </div>
+    </div>
+        
+    </section>
+    <script type="text/javascript" src="js/appinit.js"></script>
+    <script type="text/javascript" src="js/shopping.js"></script>
+    <script type="text/javascript" src="js/layer.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/need/layer.css">
+    <script type="text/javascript">
+    var mySwiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        slidesPerView: 'auto',
+        observer: true, //修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true, //修改swiper的父元素时，自动初始化swiper
+
+    });
+    </script>
+</body>
+
+</html>
